@@ -1,15 +1,13 @@
 import random
-from bokeh.models import ColumnDataSource, Plot, LinearAxis, Grid
-from bokeh.models.glyphs import MultiLine
-from bokeh.io import curdoc
-
 from parse_gcode import (guess_seek_threshold,
                          get_positions,
                          get_cities,
                          get_movements,
-                         get_strokes,
-                         calc_distance)
+                         get_strokes)
 from utilz import open_file, getMaxXY
+from bokeh.models import ColumnDataSource, Plot, LinearAxis, Grid
+from bokeh.models.glyphs import MultiLine
+from bokeh.io import curdoc, show
 
 gcode_path = './gcode_data/'
 file_name = 'inkscape_short.gcode'
@@ -20,8 +18,8 @@ seek_threshold = guess_seek_threshold(positions)
 movements = get_movements(positions)
 strokes = get_strokes(positions, seek_threshold)
 maxXY = getMaxXY(positions)
-cities = get_cities(positions, seek_threshold)
 
+cities = get_cities(positions, seek_threshold)
 # start x, start y, end x, end y
 slim_cities = [[i[0]['X'], i[0]['Y'], i[-1]['X'], i[-1]['Y']] for i in cities]
 distance = 0
@@ -29,8 +27,11 @@ distance = 0
 # sequence in which the original gcode visits the cities
 original_path = [x for x in range(len(slim_cities))]
 
+# randomisation of the sequence
+
 # path = random_path
 path = original_path
+
 start_position = positions[0]
 
 
