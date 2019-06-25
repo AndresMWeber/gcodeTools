@@ -1,0 +1,5 @@
+# Include the README
+include gcodetools/gcode_data/*.gcode
+
+# Include the data files
+recursive-include data *
