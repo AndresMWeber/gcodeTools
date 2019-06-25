@@ -114,33 +114,31 @@ class GeneticLoop(object):
                 ys.append([y1, y2])
         return dict(xs=xs, ys=ys)
 
-    def init_plot(self):
-        plot = Plot(title=None,
-                    plot_width=600,
-                    plot_height=600,
-                    min_border=0,
-                    toolbar_location=None)
-
-        glyph = MultiLine(xs="xs", ys="ys",
-                          line_color="#8073ac", line_width=0.1)
-        plot.add_glyph(self.source, glyph)
-
-        xaxis = LinearAxis()
-        plot.add_layout(xaxis, 'below')
-
-        yaxis = LinearAxis()
-        plot.add_layout(yaxis, 'left')
-
-        plot.add_layout(Grid(dimension=0, ticker=xaxis.ticker))
-        plot.add_layout(Grid(dimension=1, ticker=yaxis.ticker))
-        curdoc().add_root(plot)
-
     def update(self):
         self.get_bokeh_source(self.get_random_path(self.original_path))
+        self.init_plot(self.source)
 
-    def main_loop(self):
 
-        self.init_plot()
+def init_plot(source):
+    plot = Plot(title=None,
+                plot_width=600,
+                plot_height=600,
+                min_border=0,
+                toolbar_location=None)
+
+    glyph = MultiLine(xs="xs", ys="ys",
+                      line_color="#8073ac", line_width=0.1)
+    plot.add_glyph(source, glyph)
+
+    xaxis = LinearAxis()
+    plot.add_layout(xaxis, 'below')
+
+    yaxis = LinearAxis()
+    plot.add_layout(yaxis, 'left')
+
+    plot.add_layout(Grid(dimension=0, ticker=xaxis.ticker))
+    plot.add_layout(Grid(dimension=1, ticker=yaxis.ticker))
+    curdoc().add_root(plot)
 
 
 loop = GeneticLoop(open_file(gcode_path, file_name))
